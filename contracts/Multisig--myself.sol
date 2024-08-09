@@ -1,5 +1,4 @@
 pragma solidity ^0.8.18;
-
 import "hardhat/console.sol"; // used in testing chains
 
 contract MultisigMyself {
@@ -79,9 +78,24 @@ contract MultisigMyself {
     }
 
     function execute(uint256 _txId) external txExists(_txId) notExecuted(_txId) {
+        require(_getApprovedCount(_txId) >= required, "approvals < required");
+        Transaction transaction = transactions[_txId];
+        transaction.executed = true;
 
+        (bool success, ) = transaction.to.calldata{value: transaction.value}(transaction.data);
+        require(success, "Transaction failed");
+
+        emit Execute(_txId);
+        
     }
 
+    function _getApprovedCount(uint256 _txId) private view returns(uint256 count) {
+        for (uint256 i; i < owners.length; i++) {
+            if(approved[_txId][owners[i]]) {
+                count++ ;
+            }
+        }
+    }
 
 
 }
