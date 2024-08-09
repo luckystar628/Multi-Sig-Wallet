@@ -38,20 +38,23 @@ contract MultisigMyself {
         require(!transactions[_txId].executed, "tx already executed"); 
         _; 
     } 
-    constructor(address[] memory _owners, uint256 _required) { 
-        require(_owners.length > 0, "Owners required"); 
-        require(_owners.length >= _required && _required > 0, "Invalid required number of owners"); 
-        for (uint256 i; i < _owners.length; i++) { 
-            address owner = _owners[i]; 
-            require(owner != address(0), "Invalid owner"); 
-            require(!isOwner[owner], "Owner is not unique"); 
-            isOwner[owner] = true; 
-            owners.push(owner); 
-            console.log("New owner added: ", owner); 
-        } 
-        required = _required; 
-        console.log("Constructor is finished"); 
-    } 
+
+// This constructor initializes a multisignature wallet by setting up the owners and the required number of confirmations for transactions. It ensures that there is at least one owner, that the required number of owners is valid, and that each owner is unique and not a zero address. The owners are then stored in an array, and the required number of confirmations is set.
+
+constructor(address[] memory _owners, uint256 _required) {  
+        require(_owners.length > 0, "Owners required");  
+        require(_owners.length >= _required && _required > 0, "Invalid required number of owners");  
+        for (uint256 i; i < _owners.length; i++) {  
+            address owner = _owners[i];  
+            require(owner != address(0), "Invalid owner");  
+            require(!isOwner[owner], "Owner is not unique");  
+            isOwner[owner] = true;  
+            owners.push(owner);  
+            console.log("New owner added: ", owner);  
+        }  
+        required = _required;  
+        console.log("Constructor is finished");  
+    }
     receive() external payable { 
         emit Deposit(msg.sender, msg.value); 
     } 
