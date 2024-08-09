@@ -11,7 +11,7 @@
 <!-- PROJECT LOGO -->
 <h1>Simple Multisig Wallet Solidity Contract</h1>
 
-
+This is my first project
 
 <!-- TABLE OF CONTENTS -->
 <details>
